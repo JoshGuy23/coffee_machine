@@ -1,15 +1,8 @@
 from reference import MENU
 from reference import resources
 
-# TODO: 1. Prompt user for coffee
-# TODO: 2. Turn off coffee machine from 'off' prompt
-# TODO: 3. Print report
-# TODO: 4. Check that resources are sufficient
-# TODO: 5. Process coins
-# TODO: 6. Check transaction successful
-# TODO: 7. Make coffee
 
-
+# This function takes a user prompt and returns the appropriate status code.
 def command(choice):
     """Executes a user command"""
     if choice == "off":
@@ -27,7 +20,9 @@ def command(choice):
         return -1
 
 
+# This function takes the user status code and returns the appropriate type of coffee.
 def coffee_type(choice):
+    """Gets the coffee type the user chose"""
     if choice == 1:
         return "espresso"
     elif choice == 2:
@@ -36,6 +31,7 @@ def coffee_type(choice):
         return "cappuccino"
 
 
+# This function displays a report of available resources and what profits have been made.
 def report(money):
     """Displays a report of available resources and profits."""
     print(f"Water: {resources['water']}ml")
@@ -44,6 +40,7 @@ def report(money):
     print(f"Money: ${money:.2f}")    
 
 
+# This function checks what resources are left and whether they are enough to make the user's coffee.
 def resource_check(choice):
     """Checks available resources."""
     coffee = coffee_type(choice)
@@ -63,6 +60,7 @@ def resource_check(choice):
     return True
     
 
+# This function asks for an amount of coins for each US coin type from the user.
 def insert_coins():
     """Gets coins from the user."""
     quarters = int(input("How many quarters?: "))
@@ -74,6 +72,7 @@ def insert_coins():
     return total
 
 
+# This function checks if the user paid enough for their coffee, and returns change if any.
 def check_money(choice, amount):
     """Checks if the amount the user paid is enough for their coffee."""
     coffee = coffee_type(choice)
@@ -87,6 +86,7 @@ def check_money(choice, amount):
         return True
 
 
+# This function takes the resources needed to make the user's coffee, and returns the coffee's cost.
 def make_coffee(choice):
     """Makes the user's coffee"""
     coffee = coffee_type(choice)
@@ -107,6 +107,7 @@ def make_coffee(choice):
     return MENU[coffee]["cost"]
 
 
+# This function is the main function that drives all the other functions.
 def coffee_machine(money):
     """Coffee Machine"""
     profit = money
@@ -128,6 +129,7 @@ def coffee_machine(money):
         return profit
     
 
+# Run the coffee machine until it is turned off.
 running = 1.0
 money = 0
 while running >= 0:
