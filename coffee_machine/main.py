@@ -8,12 +8,15 @@ from reference import resources
 # TODO: 5. Process coins
 # TODO: 6. Check transaction successful
 # TODO: 7. Make coffee
+money = 0
 
 
 def command(prompt):
     """Executes a user command"""
     if prompt == "off":
         return -1
+    elif prompt == "report":
+        return 0
 
 
 def coffee_machine():
@@ -22,6 +25,12 @@ def coffee_machine():
     status = command(prompt)
     if status == -1:
         return 0
+    elif status == 0:
+        print(f"Water: {resources['water']}ml")
+        print(f"Milk: {resources['milk']}ml")
+        print(f"Coffee: {resources['coffee']}g")
+        print(f"Money: ${money}")
+    return 1
     
 
 running = 1
