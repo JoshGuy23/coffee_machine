@@ -65,6 +65,7 @@ def insert_coins():
 
 
 def check_money(choice, amount):
+    """Checks if the amount the user paid is enough for their coffee."""
     if amount < MENU[choice]["cost"]:
         print("Sorry that's not enough money. Money refunded.")
         return False
@@ -74,6 +75,24 @@ def check_money(choice, amount):
             change = amount - MENU[choice]["cost"]
             print(f"Here is ${round(change, 2):.2f} in change.")
         return True
+
+
+def make_coffee(choice):
+    """Makes the user's coffee"""
+    if choice == 1:
+        resources["water"] -= MENU[choice]["ingredients"]["water"]
+        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        print("Here is your espresso. Enjoy!")
+    elif choice == 2:
+        resources["water"] -= MENU[choice]["ingredients"]["water"]
+        resources["milk"] -= MENU[choice]["ingredients"]["milk"]
+        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        print("Here is your latte. Enjoy!")
+    else:
+        resources["water"] -= MENU[choice]["ingredients"]["water"]
+        resources["milk"] -= MENU[choice]["ingredients"]["milk"]
+        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        print("Here is your cappuccino. Enjoy!")
 
 
 def coffee_machine():
@@ -89,6 +108,9 @@ def coffee_machine():
         if ingredients:
             print("Please insert coins.")
             purchase_amount = insert_coins()
+            if check_money(prompt, purchase_amount):
+                make_coffee(prompt)
+                
     return 1
     
 
