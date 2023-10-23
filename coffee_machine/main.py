@@ -8,7 +8,6 @@ from reference import resources
 # TODO: 5. Process coins
 # TODO: 6. Check transaction successful
 # TODO: 7. Make coffee
-money = 0
 
 
 def command(choice):
@@ -28,7 +27,16 @@ def command(choice):
         return -1
 
 
-def report():
+def coffee_type(choice):
+    if choice == 1:
+        return "espresso"
+    elif choice == 2:
+        return "latte"
+    else:
+        return "cappuccino"
+
+
+def report(money):
     """Displays a report of available resources and profits."""
     print(f"Water: {resources['water']}ml")
     print(f"Milk: {resources['milk']}ml")
@@ -38,15 +46,17 @@ def report():
 
 def resource_check(choice):
     """Checks available resources."""
-    if MENU[choice]["ingredients"]["water"] > resources["water"]:
+    coffee = coffee_type(choice)
+    if MENU[coffee]["ingredients"]["water"] > resources["water"]:
         print("Sorry there is not enough water.")
         return False
     
-    if choice != 1 and MENU[choice]["ingredients"]["milk"] > resources["milk"]:
-        print("Sorry there is not enough milk.")
-        return False
+    if choice != 1:
+        if MENU[coffee]["ingredients"]["milk"] > resources["milk"]:
+            print("Sorry there is not enough milk.")
+            return False
     
-    if MENU[choice]["ingredients"]["coffee"] > resources["coffee"]:
+    if MENU[coffee]["ingredients"]["coffee"] > resources["coffee"]:
         print("Sorry there is not enough coffee.")
         return False
     
@@ -66,54 +76,61 @@ def insert_coins():
 
 def check_money(choice, amount):
     """Checks if the amount the user paid is enough for their coffee."""
-    if amount < MENU[choice]["cost"]:
+    coffee = coffee_type(choice)
+    if amount < MENU[coffee]["cost"]:
         print("Sorry that's not enough money. Money refunded.")
         return False
     else:
-        money += MENU[choice]["cost"]
-        if amount > MENU[choice]["cost"]:
-            change = amount - MENU[choice]["cost"]
+        if amount > MENU[coffee]["cost"]:
+            change = amount - MENU[coffee]["cost"]
             print(f"Here is ${round(change, 2):.2f} in change.")
         return True
 
 
 def make_coffee(choice):
     """Makes the user's coffee"""
+    coffee = coffee_type(choice)
     if choice == 1:
-        resources["water"] -= MENU[choice]["ingredients"]["water"]
-        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        resources["water"] -= MENU[coffee]["ingredients"]["water"]
+        resources["coffee"] -= MENU[coffee]["ingredients"]["coffee"]
         print("Here is your espresso. Enjoy!")
     elif choice == 2:
-        resources["water"] -= MENU[choice]["ingredients"]["water"]
-        resources["milk"] -= MENU[choice]["ingredients"]["milk"]
-        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        resources["water"] -= MENU[coffee]["ingredients"]["water"]
+        resources["milk"] -= MENU[coffee]["ingredients"]["milk"]
+        resources["coffee"] -= MENU[coffee]["ingredients"]["coffee"]
         print("Here is your latte. Enjoy!")
     else:
-        resources["water"] -= MENU[choice]["ingredients"]["water"]
-        resources["milk"] -= MENU[choice]["ingredients"]["milk"]
-        resources["coffee"] -= MENU[choice]["ingredients"]["coffee"]
+        resources["water"] -= MENU[coffee]["ingredients"]["water"]
+        resources["milk"] -= MENU[coffee]["ingredients"]["milk"]
+        resources["coffee"] -= MENU[coffee]["ingredients"]["coffee"]
         print("Here is your cappuccino. Enjoy!")
+    return MENU[coffee]["cost"]
 
 
-def coffee_machine():
+def coffee_machine(money):
     """Coffee Machine"""
+    profit = money
     prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
     status = command(prompt)
     if status == -1:
-        return 0
+        return -1
     elif status == 0:
-        report()
+        report(profit)
+        return 0
     else:
-        ingredients = resource_check(prompt)
+        profit = 0
+        ingredients = resource_check(status)
         if ingredients:
             print("Please insert coins.")
             purchase_amount = insert_coins()
-            if check_money(prompt, purchase_amount):
-                make_coffee(prompt)
-                
-    return 1
+            if check_money(status, purchase_amount):
+                profit += make_coffee(status)            
+        return profit
     
 
-running = 1
-while running == 1:
-    running = coffee_machine()
+running = 1.0
+money = 0
+while running >= 0:
+    running = coffee_machine(money)
+    if running > 0:
+        money += running
