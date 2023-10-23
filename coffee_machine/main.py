@@ -29,6 +29,7 @@ def command(choice):
 
 
 def report():
+    """Displays a report of available resources and profits."""
     print(f"Water: {resources['water']}ml")
     print(f"Milk: {resources['milk']}ml")
     print(f"Coffee: {resources['coffee']}g")
@@ -36,6 +37,7 @@ def report():
 
 
 def resource_check(choice):
+    """Checks available resources."""
     if MENU[choice]["ingredients"]["water"] > resources["water"]:
         print("Sorry there is not enough water.")
         return False
@@ -51,6 +53,17 @@ def resource_check(choice):
     return True
     
 
+def insert_coins():
+    """Gets coins from the user."""
+    quarters = int(input("How many quarters?: "))
+    dimes = int(input("How many dimes?: "))
+    nickels = int(input("How many nickels?: "))
+    pennies = int(input("How many pennies?: "))
+    
+    total = (quarters * 0.25) + (dimes * 0.1) + (nickels * 0.05) + (pennies * 0.01)
+    return total
+
+
 def coffee_machine():
     """Coffee Machine"""
     prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
@@ -61,6 +74,9 @@ def coffee_machine():
         report()
     else:
         ingredients = resource_check(prompt)
+        if ingredients:
+            print("Please insert coins.")
+            purchase_amount = insert_coins()
     return 1
     
 
