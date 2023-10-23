@@ -11,8 +11,10 @@ from reference import resources
 
 
 def command():
+    """Executes a user command"""
     print()
 
 
 def coffee_machine():
+    """Coffee Machine"""
     prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
