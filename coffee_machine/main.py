@@ -11,12 +11,21 @@ from reference import resources
 money = 0
 
 
-def command(prompt):
+def command(choice):
     """Executes a user command"""
-    if prompt == "off":
+    if choice == "off":
         return -1
-    elif prompt == "report":
+    elif choice == "report":
         return 0
+    elif choice == "espresso":
+        return 1
+    elif choice == "latte":
+        return 2
+    elif choice == "cappuccino":
+        return 3
+    else:
+        print("Next time, please enter the name correctly")
+        return -1
 
 
 def report():
@@ -26,6 +35,22 @@ def report():
     print(f"Money: ${money}")    
 
 
+def resource_check(choice):
+    if MENU[choice]["ingredients"]["water"] > resources["water"]:
+        print("Sorry there is not enough water.")
+        return False
+    
+    if choice != 1 and MENU[choice]["ingredients"]["milk"] > resources["milk"]:
+        print("Sorry there is not enough milk.")
+        return False
+    
+    if MENU[choice]["ingredients"]["coffee"] > resources["coffee"]:
+        print("Sorry there is not enough coffee.")
+        return False
+    
+    return True
+    
+
 def coffee_machine():
     """Coffee Machine"""
     prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
@@ -34,6 +59,8 @@ def coffee_machine():
         return 0
     elif status == 0:
         report()
+    else:
+        ingredients = resource_check(prompt)
     return 1
     
 
