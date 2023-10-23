@@ -19,6 +19,13 @@ def command(prompt):
         return 0
 
 
+def report():
+    print(f"Water: {resources['water']}ml")
+    print(f"Milk: {resources['milk']}ml")
+    print(f"Coffee: {resources['coffee']}g")
+    print(f"Money: ${money}")    
+
+
 def coffee_machine():
     """Coffee Machine"""
     prompt = input("What would you like? (espresso/latte/cappuccino): ").lower()
@@ -26,10 +33,7 @@ def coffee_machine():
     if status == -1:
         return 0
     elif status == 0:
-        print(f"Water: {resources['water']}ml")
-        print(f"Milk: {resources['milk']}ml")
-        print(f"Coffee: {resources['coffee']}g")
-        print(f"Money: ${money}")
+        report()
     return 1
     
 
