@@ -33,7 +33,7 @@ def report():
     print(f"Water: {resources['water']}ml")
     print(f"Milk: {resources['milk']}ml")
     print(f"Coffee: {resources['coffee']}g")
-    print(f"Money: ${money}")    
+    print(f"Money: ${money:.2f}")    
 
 
 def resource_check(choice):
@@ -62,6 +62,18 @@ def insert_coins():
     
     total = (quarters * 0.25) + (dimes * 0.1) + (nickels * 0.05) + (pennies * 0.01)
     return total
+
+
+def check_money(choice, amount):
+    if amount < MENU[choice]["cost"]:
+        print("Sorry that's not enough money. Money refunded.")
+        return False
+    else:
+        money += MENU[choice]["cost"]
+        if amount > MENU[choice]["cost"]:
+            change = amount - MENU[choice]["cost"]
+            print(f"Here is ${round(change, 2):.2f} in change.")
+        return True
 
 
 def coffee_machine():
